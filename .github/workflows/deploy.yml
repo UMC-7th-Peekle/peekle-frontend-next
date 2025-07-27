@@ -1,0 +1,52 @@
+name: Vercel Production Deployment
+
+on:
+  push:
+    branches: [main, develop] # main, develop 브랜치에 push될 때 실행
+  workflow_dispatch:
+    inputs:
+      GITHUB_ACCESS_TOKEN:
+        description: "GitHub Token for authentication"
+      PUSH_DESTINATION_GITHUB_USERNAME:
+        description: "GitHub username for the destination repository"
+      PUSH_DESTINATION_REPOSITORY_NAME:
+        description: "Name of the destination repository"
+      PUSH_DESTINATION_TARGET_BRANCH:
+        description: "Target branch in the destination repository"
+
+jobs:
+  vercel-production-deployment:
+    env:
+      PUSH_DESTINATION_GITHUB_USERNAME: ${{ github.event.inputs.PUSH_DESTINATION_GITHUB_USERNAME || secrets.PUSH_DESTINATION_GITHUB_USERNAME }}
+      PUSH_DESTINATION_REPOSITORY_NAME: ${{ github.event.inputs.PUSH_DESTINATION_REPOSITORY_NAME || secrets.PUSH_DESTINATION_REPOSITORY_NAME }}
+      PUSH_DESTINATION_TARGET_BRANCH: ${{ github.event.inputs.PUSH_DESTINATION_TARGET_BRANCH || secrets.PUSH_DESTINATION_TARGET_BRANCH }}
+      EMAIL: ${{ secrets.EMAIL }}
+      ACCESS_TOKEN: ${{ github.event.inputs.GITHUB_ACCESS_TOKEN || secrets.ACCESS_TOKEN }}
+
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: 빌드 스크립트 실행
+        run: |
+          ./scripts/build.sh
+
+      - name: 커밋 메시지 설정
+        id: commit_msg
+        run: |
+          echo "commit_message=Deploy from ${{ github.ref_name }} - ${{ github.sha }}" >> $GITHUB_OUTPUT
+
+      - name: 빌드 결과를 다른 저장소로 push
+        id: push_directory
+        uses: cpina/github-action-push-to-another-repository@main
+        env:
+          API_TOKEN_GITHUB: ${{ env.ACCESS_TOKEN }}
+        with:
+          source-directory: output
+          destination-github-username: ${{ env.PUSH_DESTINATION_GITHUB_USERNAME }}
+          destination-repository-name: ${{ env.PUSH_DESTINATION_REPOSITORY_NAME }}
+          user-email: ${{ env.EMAIL }}
+          commit-message: ${{ steps.commit_msg.outputs.commit_message }}
+          target-branch: ${{ env.PUSH_DESTINATION_TARGET_BRANCH }}
