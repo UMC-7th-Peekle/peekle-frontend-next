@@ -11,6 +11,14 @@ const compat = new FlatCompat({
 
 const eslintConfig = [
   ...compat.extends("next/core-web-vitals", "next/typescript"),
+  {
+    // CommonJS 파일에 대한 특별 설정
+    files: ['**/*.cjs'],
+    rules: {
+      // require 구문 사용 허용
+      '@typescript-eslint/no-require-imports': 'off',
+    },
+  },
 ];
 
 export default eslintConfig;
