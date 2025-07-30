@@ -1,3 +1,5 @@
+"use client";
+
 interface ToastProps {
   text: string;
 }
@@ -9,16 +11,3 @@ export default function Toast({ text }: ToastProps) {
     </div>
   );
 }
-
-/*
-사용 예시:
-import { useToastStore } from '@/common/store/toastStore';
-
-function SomeComponent() {
-  const { showToast } = useToastStore();
-  
-  const handleClick = () => {
-    showToast('토스트 메시지입니다!');
-  };
-}
-*/

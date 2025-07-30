@@ -17,9 +17,9 @@ export default function Popup({
   onRight,
 }: PopupProps) {
   return (
-    <div className="text-17b not-first:px-12pxr pt-32pxr pb-12pxr gap-24pxr flex flex-col items-center bg-gray-0">
+    <div className="rounded-20pxr text-17b not-first:px-12pxr pt-32pxr pb-12pxr gap-24pxr flex flex-col items-center bg-gray-0">
       <div className="flex flex-col items-center gap-18pxr">
-        <Warning className="size-24pxr" />
+        <Warning className="size-24pxr text-gray-200" />
         <p>{title}</p>
       </div>
       <div className="flex flex-row items-center gap-10pxr">
