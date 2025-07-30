@@ -19,6 +19,13 @@ pre-commit:
         pnpm exec prettier --write {staged_files} || exit 1
         echo "✅ Code formatting completed!"
       stage_fixed: true
+    type-check:
+      run: |
+        echo "🔍 ========================================="
+        echo "📝 Running TypeScript type checking..."
+        echo "🔍 ========================================="
+        pnpm type-check || exit 1
+        echo "✅ Type checking completed successfully!"
 
 commit-msg:
   commands:
