@@ -42,7 +42,7 @@ try {
   console.log(`🔍 Checking commit message format`);
   console.log(`🚀 ========================================`);
 
-  execSync(`npx commitlint --edit "${absoluteCommitMsgFilePath}"`, {
+  execSync(`pnpm exec commitlint --edit "${absoluteCommitMsgFilePath}"`, {
     stdio: 'inherit',
   });
 
