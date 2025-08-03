@@ -1,6 +1,6 @@
-import { SvgWrapper } from "./SvgWrapper";
+import { SvgWrapper } from './SvgWrapper';
 
-export function MenuIcon(props: React.HTMLAttributes<HTMLElement>) {
+export const MenuIcon = (props: React.HTMLAttributes<HTMLElement>) => {
   return (
     <SvgWrapper {...props}>
       <svg
